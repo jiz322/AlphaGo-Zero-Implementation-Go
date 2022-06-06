@@ -163,32 +163,10 @@ class MCTS():
         """
 
         s = self.game.stringRepresentation(canonicalBoard)+ str(turns+level).encode()
-        #print('mcts')
-        #print(canonicalBoard)
-        #print('l78')
 
         #!! DIFFERENT LOGIC HERE FOR GO TO AVOID STACKOVERFLOW
-        #if s not in self.Es:
-            #print('if s not in self.Es:')
         if (pre_pass and pre_pre_pass) or (turns+level > self.game.getMaxMoves()):
             self.Es[s] = self.game.getGameEnded(canonicalBoard, 1)
-
-
-
-        #print("===Es[s]===")  
-        #print(self.Es[s])
-        #print("^^^Es[s]===")  
-  #          if self.Es[s] != 0:
-  #              print('if self.Es[s] != 0:')
-            #print(canonicalBoard)
-            # terminal node
-            #canonicalBoard.pre_previous_is_pass = False
-           # canonicalBoard.previous_is_pass = False
-     #       a = 81
-      #      print(self.Nsa[(s, a)])
-       #     self.Nsa[(s, a)] += 1
-        #    if self.Nsa[(s, a)] >= sim:
-         #       self.capFlag = True
             return -self.Es[s]
 
         if s not in self.Ps:                        #bug take away: copy using .copy
@@ -210,20 +188,9 @@ class MCTS():
                 #print(0.25*np.random.dirichlet([0.03*canonicalBoard.board_size**2/valid_length]*len(self.Ps[s])))
             self.Ps[s] = self.Ps[s] * valids  # masking invalid moves
             
-            if maxLevel < 100:
-                topN = []
-                for i in self.Ps[s]:
-                    topN.sort()
-                    if len(topN) == maxLeaves:
-                        if i > topN[0]:
-                            topN[0] = i
-                    else:
-                        topN.append(i)
-            
-                for i in range(1, len(self.Ps[s])):
-                    if self.Ps[s][i] not in topN:
-                        self.Ps[s][i] = 0
-                        
+            if maxLevel < 100:             
+                benchMark = np.sort(self.Ps[s])[-maxLeaves]
+                self.Ps[s][self.Ps[s]<benchMark] = 0             
                 sum_Ps_s = np.sum(self.Ps[s])
 
             
