@@ -13,7 +13,7 @@ coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
 args = dotdict({
     'size': 9,                  #board size
-    'numIters': 5000,
+    'numIters': 1,
     'numEps': 1,              # Number of complete self-play games to simulate during a new iteration.
     'tempThreshold': 0,        # zero
     'updateThreshold': 0.51,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
@@ -25,14 +25,14 @@ args = dotdict({
     'instinctArena': False,     #if set true reset Arena's MTCL tree each time
     'balancedGame': True,      # if balanced, black should win over 6 scores
     'firstIter': False,        # No checkpoint for self-play
-    'checkpoint': './temp_level/',
+    'checkpoint': './temp/',
     'load_model': False,
-    'load_folder_file': ('./temp_level','best.pth.tar'),
+    'load_folder_file': ('./temp','best.pth.tar'),
     'numItersForTrainExamplesHistory': 0,
-    'resignThreshold': -0.9999,   #resign when best Q value less than threshold Q[-1, 1]
+    'resignThreshold': -1.1,   #resign when best Q value less than threshold Q[-1, 1]
     'levelBased': True,
     'maxLevel' : 14,
-    'maxLeaves': 4,
+    'maxLeaves': 5,
 
 })
 
