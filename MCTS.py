@@ -175,10 +175,13 @@ class MCTS():
             # leaf node
             self.Ps[s], v = self.nnet.predict(canonicalBoard)
 
-            #print('nn')
-            #print(canonicalBoard)
+            # NB
+            # This Part of Code can be safely omitted if model is well trained.
             valids = self.game.getValidMoves(canonicalBoard, 1)
             valid_length = len(self.Ps[s]) - np.count_nonzero(self.Ps[s]==0)
+            
+            
+            
             if noise: # add dirichlet noise to the root policy
                 #print("here")
                 #print(self.Ps[s])
