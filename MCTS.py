@@ -51,6 +51,11 @@ class MCTS():
         fastDecision = int(0.25*self.args.numMCTSSims)                                          
         noised_numMCTSSims = np.random.choice([self.args.numMCTSSims, fastDecision], p=[0.25, 0.75])
         isFast = (noised_numMCTSSims == fastDecision)
+        
+        # We are not using isFact at all
+        isFast = False
+        
+        
         # self-iteration 
         # For level-based Training, Monte-Carlo Search for expected winner only
         # Noise is generated only by fluctuating maxLevel
@@ -109,6 +114,16 @@ class MCTS():
         valids = self.game.getValidMoves(canonicalBoard, 1)
         counts = counts * valids 
         
+        # New: First move random first 20
+        if canonicalBoard.turns == 0 and training == 1:
+            resign = False
+            isFast = False
+            probs = np.array([0.0] * len(counts))
+            largests = np.array(counts.argsort()[-20:][::-1])
+            probs[largests] += 0.05
+            return probs, isFast, resign
+        
+        
         #After add Kata-like noise, temp always set to 0
         if temp == 0:
             bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
@@ -117,7 +132,7 @@ class MCTS():
             probs[bestA] = 1    
             resign = False
             try:
-                if True or training == 0 and arena == 0: #print info for testing outside of learning
+                if training == 0 and arena == 0: #print info for testing outside of learning
                      print(np.array(self.Ps[s][:-1]).reshape(9,9))
                      print(self.Ps[s][-1])
                      print(np.array(counts[:-1]).reshape(9,9))

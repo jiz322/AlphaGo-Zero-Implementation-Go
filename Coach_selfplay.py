@@ -45,7 +45,7 @@ class Coach_selfplay():
             trainExamples: a list of examples of the form (canonicalBoard, currPlayer, pi,v)
                            pi is the MCTS informed policy vector, v is +1 if
                            the player eventually won the game, else -1.
-        """
+        """   
         trainExamples = []
         board = self.game.getInitBoard()
         self.curPlayer = 1
@@ -66,6 +66,11 @@ class Coach_selfplay():
 
             action = np.random.choice(len(pi), p=pi)
             board, self.curPlayer = self.game.getNextState(board, self.curPlayer, action)
+            
+            print(action)
+            self.game.display(board)
+            
+            
             #log.info(f'After action board: #/n\n{board}')
             r = self.game.getGameEnded(board, self.curPlayer)           
             if resign:
@@ -81,15 +86,7 @@ class Coach_selfplay():
 
     def learn(self):
         """
-        Performs numIters iterations with numEps episodes of self-play in each
-        iteration. After every iteration, it retrains neural network with
-        examples in trainExamples (which has a maximum length of maxlenofQueue).
-        It then pits the new neural network against the old one and accepts it
-        only if it wins >= updateThreshold fraction of games.
-
-        Go edit:
-        load best.pth.tar to compare and self-iteration
-        temp.pth.tar only for training. it may be overwrite shortly
+        Not a learn. It simply save the game examples using pickler
         """
 
         for i in range(1, self.args.numIters + 1):

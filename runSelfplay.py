@@ -6,10 +6,16 @@ from Coach_selfplay import Coach_selfplay
 from go.Game import Game as Game
 from go.pytorch.NNet import NNetWrapper as nn
 from utils import *
+import numpy as np
 
+
+        
 log = logging.getLogger(__name__)
 
 coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
+
+# NB: Disable this line to generate different game examples
+np.random.seed(10)
 
 args = dotdict({
     'size': 9,                  #board size
@@ -31,8 +37,8 @@ args = dotdict({
     'numItersForTrainExamplesHistory': 0,
     'resignThreshold': -1.1,   #resign when best Q value less than threshold Q[-1, 1]
     'levelBased': True,
-    'maxLevel' : 14,
-    'maxLeaves': 5,
+    'maxLevel' : 6,
+    'maxLeaves': 8,
 
 })
 
