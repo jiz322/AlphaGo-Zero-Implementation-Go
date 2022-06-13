@@ -19,7 +19,6 @@ class Coach_train_one():
     """
 
     def __init__(self, game, nnet, args):
-        self.firstIter = args.firstIter #set true if it produce first chechpoint to save
         self.game = game
         self.nnet = nnet
         self.pnet = self.nnet.__class__(self.game)  # the competitor network
