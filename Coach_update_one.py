@@ -23,7 +23,6 @@ class Coach_update_one():
         self.pnet = self.nnet.__class__(self.game)  # the competitor network
         self.args = args
         self.mcts = MCTS(self.game, self.nnet, self.args)
-        self.trainExamplesHistory = []  # history of examples from args.numItersForTrainExamplesHistory latest iterations
 
     def learn(self):
         """
@@ -74,6 +73,8 @@ class Coach_update_one():
     def tournament(self, playList):
         tournamentResult = dict.fromkeys(playList, 0)
         previousWin, currentWin = self.playGame(playList[0], 'prev', playList[1], 'curr')  
-        tournamentResult[playList[0]] += (previousWin - currentWin + self.args.arenaCompare)/2
-        tournamentResult[playList[1]] += (currentWin - previousWin + self.args.arenaCompare)/2
+        # tournamentResult[playList[0]] += (previousWin - currentWin + self.args.arenaCompare)/2
+        # tournamentResult[playList[1]] += (currentWin - previousWin + self.args.arenaCompare)/2
+        tournamentResult[playList[0]] += previousWin
+        tournamentResult[playList[1]] += currentWin
         return list(tournamentResult.values())
