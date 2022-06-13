@@ -67,11 +67,11 @@ class MCTS():
             #if white cheats, no simulator for black's turns
             if ew == -1: 
                 if canonicalBoard.turns%2 == 0:
-                    i = -3
+                    i = -21
             #if black cheats, no simulator for white's turns
             if ew == 1:  
                 if canonicalBoard.turns%2 == 1:
-                    i = -3
+                    i = -21
             while(True):
                 i += 1
                 if i == 0 or i == 4000: 
@@ -206,11 +206,15 @@ class MCTS():
                 #print(0.25*np.random.dirichlet([0.03*canonicalBoard.board_size**2/valid_length]*len(self.Ps[s])))
             self.Ps[s] = self.Ps[s] * valids  # masking invalid moves
             
-            if maxLevel < 100:             
+            if maxLevel < 100 and turns > 0:             
                 benchMark = np.sort(self.Ps[s])[-maxLeaves]
                 self.Ps[s][self.Ps[s]<benchMark] = 0             
                 sum_Ps_s = np.sum(self.Ps[s])
-
+            
+            if turns == 0:
+                benchMark = np.sort(self.Ps[s])[-20]
+                self.Ps[s][self.Ps[s]<benchMark] = 0   
+                sum_Ps_s = np.sum(self.Ps[s])
             
             #print(v)
             if sum_Ps_s > 0:

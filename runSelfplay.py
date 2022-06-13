@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
 # NB: Disable this line to generate different game examples
-np.random.seed(10)
+# np.random.seed(10)
 
 args = dotdict({
     'size': 9,                  #board size
