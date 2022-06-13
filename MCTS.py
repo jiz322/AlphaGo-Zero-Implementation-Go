@@ -63,7 +63,7 @@ class MCTS():
             level = self.args.maxLevel
             noised_level = np.random.choice([level, level-2, level-4], p=[0.2, 0.3, 0.5])
             i = 0
-            print(noised_level)
+            # print(noised_level)
             #if white cheats, no simulator for black's turns
             if ew == -1: 
                 if canonicalBoard.turns%2 == 0:
@@ -83,15 +83,21 @@ class MCTS():
                     self.capFlag = False
                     break
         if arena == 1: # in arena, IT HAS TO BE FAIR!! NO CHEATING!!
+            # Edit CSE492: Randomness of decision
+            level = self.args.maxLevel
+            noised_level = np.random.choice([level, level-2, level-4], p=[0.2, 0.3, 0.5])
             i = 0
             while(True):
                 i += 1
-                if i == 10000: #cap at 8000 total
+                if i == 0 or i == 4000: 
+                    #skip simulation to help the cheater
                     break
-                self.search(canonicalBoard, canonicalBoard.turns, noise=False, sim=self.args.numMCTSSims, levelBased=self.args.levelBased, maxLevel=self.args.maxLevel, maxLeaves=self.args.maxLeaves)
+                #Cheater's Turn.
+                self.search(canonicalBoard, canonicalBoard.turns, noise=True, sim=self.args.numMCTSSims, levelBased=self.args.levelBased, maxLevel=noised_level, maxLeaves=self.args.maxLeaves)
                 if self.capFlag:
                     self.capFlag = False
                     break
+                
         if training == 0 and arena == 0:
             #For testing out of learning
             #Cheat or not, depends on the settings in pit.py
@@ -115,7 +121,7 @@ class MCTS():
         counts = counts * valids 
         
         # New: First move random first 20
-        if canonicalBoard.turns == 0 and training == 1:
+        if canonicalBoard.turns == 0 and training + arena == 1:
             resign = False
             isFast = False
             probs = np.array([0.0] * len(counts))
