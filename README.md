@@ -1,9 +1,8 @@
 # AlphaGo-Zero-Implementation-Go
 
-This project is an independent study at Lehigh University.
 
 
-### Train a 9*9 Game model (in process)
+### Train a 9*9 Game model 
 
 To start training a model for Go, run three python script concurentlly:
 
